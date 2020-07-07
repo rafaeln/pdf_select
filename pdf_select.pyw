@@ -30,20 +30,20 @@ def executar():
     except:
         chunklimit = False
 
-    fl = []  # Array de folhas do documento final
+    fl = []  # Final document page array
 
     if folder:
-        # Caso haja um diretírio informado ler todos os pdf deste diretório
+        # Read all pdf files If path informed
         docs = glob('{}/*.pdf'.format(folder))
         _nsre = re.compile('([0-9]+)')
-        def natural_sort_key(s): # função para considerar números não como string em ordenamento
+        def natural_sort_key(s): # fix order
             return [int(text) if text.isdigit() else text.lower()
                     for text in re.split(_nsre, s)]
         docs.sort(key=natural_sort_key)
     else:
         docs = [eArquivo.get()]
 
-    # Criar array de folhas do documento de saída
+    # Final document page array
     if not fl0:
         fl1= 'todas'
     else:
@@ -77,7 +77,7 @@ def executar():
                                  'The pdf file need a password.')
                     return
 
-            # Gerar documento de saída com folhas definidas na variável "fl"
+            # Generate file
             if fl1 == 'todas':
                 fl = range(1, pdffonte.getNumPages() + 1)
             for f in fl:
@@ -133,7 +133,7 @@ def executar():
                     pdfsaida.write(ArqSaida)
                     gerado.append(saida)
         except:
-            messagebox.showerror('Erro', 'Não foi passível salvar arquivo.')
+            messagebox.showerror('Error', 'Unable save the file.')
             return
 
     try:
@@ -142,16 +142,16 @@ def executar():
                 pdfsaida.write(ArqSaida)
                 gerado.append(saida)
     except:
-        messagebox.showerror('Erro', 'Não foi passível salvar arquivo.')
+        messagebox.showerror('Error', 'Unable save the file.')
         return
 
     plural = 's' if len(gerado)>1 else ''
-    messagebox.showinfo('', 'Arquivo{1} gerado{1}:\n{0}'.format('\n'.join(gerado), plural))
+    messagebox.showinfo('', f'File{plural}:\n{'\n'.join(gerado)}')
 
 
 def selarq():
     temp = filedialog.askopenfilename(
-        filetypes=[('Arquivo PDF', 'pdf')],
+        filetypes=[('PDF file', 'pdf')],
         initialdir=os.getcwd())
     if temp:
         eArquivo.delete(0, tk.END)
